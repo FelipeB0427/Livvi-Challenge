@@ -46,3 +46,18 @@ enum BLEEventType: UInt8 {
         }
     }
 }
+
+// MARK: - API Response Models
+struct APIEvent: Decodable {
+    let id: Int
+    let logType: String
+    let logNumber: Int
+    let eventTimestamp: String
+    let additionalData: [APIEventAdditionalData]
+}
+
+struct APIEventAdditionalData: Decodable {
+    let parameterName: String
+    let hexValue: String
+    let parsedValue: String
+}

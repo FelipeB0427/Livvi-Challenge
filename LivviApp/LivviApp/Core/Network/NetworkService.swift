@@ -44,10 +44,15 @@ final class NetworkService: NetworkServiceProtocol {
         
         // Decode the response
         do {
-            let decoder = JSONDecoder()
-            return try decoder.decode(T.self, from: data)
+            return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            print("Decoding error: \(error)")
+            print("🚨 DECODE ERROR: \(error)")
+            
+            if let rawJSON = String(data: data, encoding: .utf8) {
+                print("📦 JSON THAT MAKE THE ERROr:\n\(rawJSON)")
+                print("----------------------------------------")
+            }
+            
             throw NetworkError.decodingError(error)
         }
     }

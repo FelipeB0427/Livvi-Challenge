@@ -30,12 +30,14 @@ struct DoorsView: View {
                 } else {
                     List {
                         ForEach(viewModel.doors) { door in
-                            DoorRowView(door: door)
-                                .onAppear {
-                                    Task {
-                                        await viewModel.loadMoreDoorsIfNeeded(currentDoor: door)
+                            NavigationLink(destination: DoorEventsView(doorId: door.id)) {
+                                DoorRowView(door: door)
+                                    .onAppear {
+                                        Task {
+                                            await viewModel.loadMoreDoorsIfNeeded(currentDoor: door)
+                                        }
                                     }
-                                }
+                            }
                         }
                     }
                     .listStyle(.plain)

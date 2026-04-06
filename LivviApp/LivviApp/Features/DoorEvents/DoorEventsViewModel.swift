@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 @MainActor
-class EventsViewModel: ObservableObject {
+class DoorEventsViewModel: ObservableObject {
     @Published var events: [ParsedBLEEvent] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
@@ -67,23 +67,28 @@ class EventsViewModel: ObservableObject {
         let endpoint = EventsEndpoint.rawEvents(doorId: doorId, page: currentPage, size: pageSize)
         
         do {
+            let response: PaginatedResponse<APIEvent> = try await networkService.request(endpoint)
+            let apiEvents = response.content
             
-            let response: PaginatedResponse<String> = try await networkService.request(endpoint)
-            let rawBase64Strings = response.content ?? []
+            let formatter = ISO8601DateFormatter()
             
-            var parsedEvents: [ParsedBLEEvent] = []
-            
-            for base64 in rawBase64Strings {
-                do {
-                    let event = try parser.parse(base64String: base64)
-                    parsedEvents.append(event)
-                } catch {
-                    print("⚠️ Failed to parse BLE event: \(base64) - Error: \(error)")
-                }
+            let mappedEvents: [ParsedBLEEvent] = apiEvents.map { apiEvent in
+                let date = formatter.date(from: apiEvent.eventTimestamp) ?? Date()
+                
+                let details = apiEvent.additionalData
+                    .map { "\($0.parameterName): \($0.parsedValue)" }
+                    .joined(separator: " | ")
+                
+                let finalDetails = details.isEmpty ? "No additional data" : details
+                
+                let formattedType = apiEvent.logType
+                    .replacingOccurrences(of: "_", with: " ")
+                    .capitalized
+                
+                return ParsedBLEEvent(timestamp: date, eventType: formattedType, payloadDetails: finalDetails)
             }
             
-            self.events.append(contentsOf: parsedEvents)
-            
+            self.events.append(contentsOf: mappedEvents)
             self.hasMorePages = response.page < (response.totalPages - 1)
             
         } catch let NetworkError.httpError(_, apiError) {
