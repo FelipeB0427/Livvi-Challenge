@@ -8,13 +8,13 @@
 import Foundation
 import Security
 
-protocol AuthStoreProtocol {
+protocol AuthStore {
     func saveToken(_ token: String)
     func getToken() -> String?
     func deleteToken()
 }
 
-class KeychainAuthStore: AuthStoreProtocol {
+class KeychainAuthStore: AuthStore {
     private let service = "com.livvi.bearerToken"
     
     func saveToken(_ token: String) {

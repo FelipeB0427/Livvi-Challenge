@@ -19,7 +19,7 @@ protocol Endpoint {
     var method: HTTPMethod { get }
     var headers: [String: String] { get }
     var body: Data? { get }
-    var queryItems: [URLQueryItem]? { get }
+    var queryItems: [URLQueryItem] { get }
 }
 
 extension Endpoint {
@@ -30,7 +30,10 @@ extension Endpoint {
     var urlRequest: URLRequest? {
         var components = URLComponents(string: baseURL)
         components?.path = path
-        components?.queryItems = queryItems
+        
+        if !queryItems.isEmpty {
+            components?.queryItems = queryItems
+        }
         
         guard let url = components?.url else { return nil }
         
