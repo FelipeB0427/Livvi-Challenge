@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum BLEEventError: Error {
+enum BLEParseError: Error {
     case invalidBase64
     case insufficientData
 }
@@ -26,11 +26,11 @@ class BLEEventParser {
     
     func parse(base64String: String) throws -> ParsedBLEEvent {
         guard let data = Data(base64Encoded: base64String) else {
-            throw BLEEventError.invalidBase64
+            throw BLEParseError.invalidBase64
         }
         
         guard data.count >= 5 else {
-            throw BLEEventError.insufficientData
+            throw BLEParseError.insufficientData
         }
         
         let tsRaw = data[0...3].withUnsafeBytes { $0.load(as: UInt32.self) }
@@ -41,7 +41,7 @@ class BLEEventParser {
         let payloadEnd = 5 + payloadLen
         
         guard data.count >= payloadEnd else {
-            throw BLEEventError.insufficientData
+            throw BLEParseError.insufficientData
         }
         
         let payloadData = data[5..<payloadEnd]
@@ -54,25 +54,31 @@ class BLEEventParser {
     
     private func processPayload(data: Data, logCode: UInt8) -> String {
         if data.isEmpty {
-            return "No payload"
+            return "No additional data"
         }
         
+        // 1. Convert the Data "slice" into a Byte Array to ensure the index starts at 0
+        let bytes = [UInt8](data)
+        
         switch logCode {
-        case 0x13:
-            let level = data[0]
-            return "Battery level: \(level)%"
-        case 0x50, 0x51:
-            guard data.count == 5 else { return "Invalid payload" }
+        case 0x13: // Battery Low
+            let level = bytes[0]
+            return "Battery Level: \(level)%"
+        case 0x50, 0x51: // Unlock / Unlock Denied
+            guard bytes.count == 5 else { return "Invalid payload" }
             
-            let mode = data[0]
-            let permissionId = data[1...4].withUnsafeBytes { $0.load(as: UInt32.self) }
+            // Now accessing index 0 is 100% safe
+            let mode = bytes[0]
+            
+            // 2. Repack the 4 bytes of the ID to extract the Little-Endian UInt32
+            let permissionId = Data(bytes[1...4]).withUnsafeBytes { $0.load(as: UInt32.self) }
+            
             let modeName = getPermissionModeName(mode)
-            
             return "Mode: \(modeName) | Permission ID: \(permissionId)"
         default:
-            let hexString = data.map { String(format: "%02X", $0) }.joined(separator: " ")
-            
-            return "Raw Payload: \(hexString)"
+            // Fallback: show the raw payload in Hexadecimal
+            let hexString = bytes.map { String(format: "%02X", $0) }.joined(separator: " ")
+            return "Raw Payload: [\(hexString)]"
         }
     }
     

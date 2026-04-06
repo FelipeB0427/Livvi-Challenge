@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		7FFE0D8A2F836EEA00FB1FA1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7FFE0CDA2F7DED4700FB1FA1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7FFE0CE12F7DED4700FB1FA1;
+			remoteInfo = LivviApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		7FFE0CE22F7DED4700FB1FA1 /* LivviApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LivviApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FFE0D862F836EEA00FB1FA1 /* LivviAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LivviAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +27,22 @@
 			path = LivviApp;
 			sourceTree = "<group>";
 		};
+		7FFE0D872F836EEA00FB1FA1 /* LivviAppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LivviAppTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		7FFE0CDF2F7DED4700FB1FA1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7FFE0D832F836EEA00FB1FA1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				7FFE0CE42F7DED4700FB1FA1 /* LivviApp */,
+				7FFE0D872F836EEA00FB1FA1 /* LivviAppTests */,
 				7FFE0CE32F7DED4700FB1FA1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				7FFE0CE22F7DED4700FB1FA1 /* LivviApp.app */,
+				7FFE0D862F836EEA00FB1FA1 /* LivviAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +95,29 @@
 			productReference = 7FFE0CE22F7DED4700FB1FA1 /* LivviApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7FFE0D852F836EEA00FB1FA1 /* LivviAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7FFE0D8C2F836EEA00FB1FA1 /* Build configuration list for PBXNativeTarget "LivviAppTests" */;
+			buildPhases = (
+				7FFE0D822F836EEA00FB1FA1 /* Sources */,
+				7FFE0D832F836EEA00FB1FA1 /* Frameworks */,
+				7FFE0D842F836EEA00FB1FA1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7FFE0D8B2F836EEA00FB1FA1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7FFE0D872F836EEA00FB1FA1 /* LivviAppTests */,
+			);
+			name = LivviAppTests;
+			packageProductDependencies = (
+			);
+			productName = LivviAppTests;
+			productReference = 7FFE0D862F836EEA00FB1FA1 /* LivviAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +130,11 @@
 				TargetAttributes = {
 					7FFE0CE12F7DED4700FB1FA1 = {
 						CreatedOnToolsVersion = 26.1;
+					};
+					7FFE0D852F836EEA00FB1FA1 = {
+						CreatedOnToolsVersion = 26.1;
+						LastSwiftMigration = 2610;
+						TestTargetID = 7FFE0CE12F7DED4700FB1FA1;
 					};
 				};
 			};
@@ -100,12 +153,20 @@
 			projectRoot = "";
 			targets = (
 				7FFE0CE12F7DED4700FB1FA1 /* LivviApp */,
+				7FFE0D852F836EEA00FB1FA1 /* LivviAppTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		7FFE0CE02F7DED4700FB1FA1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7FFE0D842F836EEA00FB1FA1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +183,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7FFE0D822F836EEA00FB1FA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7FFE0D8B2F836EEA00FB1FA1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7FFE0CE12F7DED4700FB1FA1 /* LivviApp */;
+			targetProxy = 7FFE0D8A2F836EEA00FB1FA1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		7FFE0CEB2F7DED4900FB1FA1 /* Debug */ = {
@@ -310,6 +386,51 @@
 			};
 			name = Release;
 		};
+		7FFE0D8D2F836EEA00FB1FA1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3753BCYQD8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.felipebalmeida.LivviAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LivviApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LivviApp";
+			};
+			name = Debug;
+		};
+		7FFE0D8E2F836EEA00FB1FA1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3753BCYQD8;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.felipebalmeida.LivviAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LivviApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LivviApp";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -327,6 +448,15 @@
 			buildConfigurations = (
 				7FFE0CEE2F7DED4900FB1FA1 /* Debug */,
 				7FFE0CEF2F7DED4900FB1FA1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7FFE0D8C2F836EEA00FB1FA1 /* Build configuration list for PBXNativeTarget "LivviAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7FFE0D8D2F836EEA00FB1FA1 /* Debug */,
+				7FFE0D8E2F836EEA00FB1FA1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
