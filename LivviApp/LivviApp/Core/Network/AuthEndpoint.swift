@@ -13,8 +13,8 @@ enum AuthEndpoint: Endpoint {
     
     var path: String {
         switch self {
-        case .signUp: return "/auth/signup"
-        case .signIn: return "/auth/signin"
+        case .signUp: return "/users/signup"
+        case .signIn: return "/users/signin"
         }
     }
     
@@ -39,5 +39,9 @@ enum AuthEndpoint: Endpoint {
     
     var queryItems: [URLQueryItem] {
         return []
+    }
+    
+    var requiresAuth: Bool {
+        return false
     }
 }

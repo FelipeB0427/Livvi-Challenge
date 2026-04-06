@@ -26,9 +26,20 @@ final class NetworkService: NetworkServiceProtocol {
         }
         
         // Token interception
-        if let token = authStore.getToken() {
+        if endpoint.requiresAuth, let token = authStore.getToken() {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
+        
+        // 🐞 INÍCIO DO DEBUG
+                print("🚀 [NETWORK] Disparando requisição...")
+                print("🔗 URL: \(request.url?.absoluteString ?? "N/A")")
+                print("📝 Método: \(request.httpMethod ?? "N/A")")
+                print("🪪 Headers: \(request.allHTTPHeaderFields ?? [:])")
+                if let bodyData = request.httpBody, let bodyString = String(data: bodyData, encoding: .utf8) {
+                    print("📦 Body: \(bodyString)")
+                }
+                print("----------------------------------------")
+                // 🐞 FIM DO DEBUG
         
         let (data, response) = try await urlSession.data(for: request)
         

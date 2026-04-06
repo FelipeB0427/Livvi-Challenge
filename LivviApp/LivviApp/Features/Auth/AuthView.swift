@@ -61,6 +61,11 @@ struct AuthView: View {
                 .foregroundColor(.white)
                 .cornerRadius(8)
                 .disabled(viewModel.isloading)
+                                
+                NavigationLink("Don't have an account? Sign Up", destination: SignUpView())
+                    .font(.footnote)
+                    .foregroundColor(.blue)
+                    .padding(.top, 10)
                 
                 Spacer()
                 

@@ -20,6 +20,7 @@ protocol Endpoint {
     var headers: [String: String] { get }
     var body: Data? { get }
     var queryItems: [URLQueryItem] { get }
+    var requiresAuth: Bool { get }
 }
 
 extension Endpoint {
@@ -27,7 +28,15 @@ extension Endpoint {
         return "https://hiring-api.samba.dev.assaabloyglobalsolutions.net"
     }
     
+    var requiresAuth: Bool {
+        return true
+    }
+    
     var urlRequest: URLRequest? {
+        guard let url = URL(string: baseURL)?.appendingPathComponent(path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))) else {
+            return nil
+        }
+        
         var components = URLComponents(string: baseURL)
         components?.path = path
         
@@ -35,9 +44,9 @@ extension Endpoint {
             components?.queryItems = queryItems
         }
         
-        guard let url = components?.url else { return nil }
+        guard let finalURL = components?.url else { return nil }
         
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: finalURL)
         request.httpMethod = method.rawValue
         request.httpBody = body
         

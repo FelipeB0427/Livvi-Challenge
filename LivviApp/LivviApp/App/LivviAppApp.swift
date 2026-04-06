@@ -11,7 +11,7 @@ import SwiftUI
 struct LivviAppApp: App {
     var body: some Scene {
         WindowGroup {
-            EmptyView()
+            AuthView()
         }
     }
 }
