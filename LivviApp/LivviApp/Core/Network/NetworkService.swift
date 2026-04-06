@@ -49,7 +49,7 @@ final class NetworkService: NetworkServiceProtocol {
             print("🚨 DECODE ERROR: \(error)")
             
             if let rawJSON = String(data: data, encoding: .utf8) {
-                print("📦 JSON THAT MAKE THE ERROr:\n\(rawJSON)")
+                print("📦 JSON THAT MAKE THE ERROR:\n\(rawJSON)")
                 print("----------------------------------------")
             }
             
