@@ -1,0 +1,84 @@
+//
+//  AuthView.swift
+//  LivviApp
+//
+//  Created by Felipe on 05/04/26.
+//
+
+import SwiftUI
+
+struct AuthView: View {
+    @StateObject private var viewModel = AuthViewModel()
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 20) {
+                Text("Welcome to Livvi")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.bottom, 40)
+                
+                TextField("Email", text: $viewModel.email)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(.emailAddress)
+                    .autocapitalization(.none)
+                
+                SecureField("Password", text: $viewModel.password)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .font(.caption)
+                }
+                
+                Button(action: {
+                    Task {
+                        await viewModel.signIn()
+                    }
+                }) {
+                    if viewModel.isloading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue.opacity(0.7))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    } else {
+                        Text("Sign In")
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .foregroundColor(.white)
+                .cornerRadius(8)
+                .disabled(viewModel.isloading)
+                                
+                NavigationLink("Don't have an account? Sign Up", destination: SignUpView())
+                    .font(.footnote)
+                    .foregroundColor(.blue)
+                    .padding(.top, 10)
+                
+                Spacer()
+                
+            }
+            .padding()
+            .navigationDestination(isPresented: $viewModel.isAuthenticated) {
+                DoorsView()
+                    .navigationBarBackButtonHidden()
+            }
+        }
+    }
+}
+
+#Preview {
+    AuthView()
+}
