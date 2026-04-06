@@ -7,15 +7,11 @@
 
 import Foundation
 
-struct PaginateResponse<T: Decodable>: Decodable {
-    let items: [T]
-    let page: PageInfo
-}
-
-struct PageInfo: Decodable {
-    let number: Int
+struct PaginatedResponse<T: Decodable>: Decodable {
+    let content: [T]
+    let page: Int
     let size: Int
-    let totalItems: Int
+    let totalElements: Int
     let totalPages: Int
 }
 

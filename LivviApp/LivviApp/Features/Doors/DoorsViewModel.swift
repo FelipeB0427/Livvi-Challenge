@@ -82,11 +82,11 @@ class DoorsViewModel: ObservableObject {
         }
         
         do {
-            let response: PaginateResponse<Door> = try await networkService.request(endpoint)
+            let response: PaginatedResponse<Door> = try await networkService.request(endpoint)
             
-            self.doors.append(contentsOf: response.items)
+            self.doors.append(contentsOf: response.content)
             
-            self.hasMorePages = response.page.number < (response.page.totalPages - 1)
+            self.hasMorePages = response.page < (response.totalPages - 1)
         } catch let NetworkError.httpError(_, apiError) {
             self.errorMessage = apiError?.description ?? "An unknown error occurred."
         } catch {

@@ -72,7 +72,7 @@ struct AuthView: View {
             }
             .padding()
             .navigationDestination(isPresented: $viewModel.isAuthenticated) {
-                Text("You are now signed in!")
+                DoorsView()
                     .navigationBarBackButtonHidden()
             }
         }

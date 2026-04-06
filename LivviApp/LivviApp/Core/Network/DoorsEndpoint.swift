@@ -14,14 +14,14 @@ enum DoorsEndpoint: Endpoint {
     var path: String {
         switch self {
         case .list:
-            return "/doors" [cite: 65]
+            return "/doors"
         case .find:
-            return "/doors/find" [cite: 65]
+            return "/doors/find"
         }
     }
     
     var method: HTTPMethod {
-        return .get [cite: 65]
+        return .get
     }
     
     var headers: [String : String] {
