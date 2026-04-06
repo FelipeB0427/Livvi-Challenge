@@ -7,19 +7,26 @@
 
 import Foundation
 
-// Define a custom error type for API-related errors
+/// Represents an error object returned by the backend API.
+///
+/// Contains a machine-friendly `code`, a `description` for display, and optional field-level errors
+/// that indicate validation problems.
 struct APIError: Decodable, Error {
     let code: String
     let description: String
     let fieldErrors: [FieldError]?
 }
 
+/// FieldError maps a validation error for a specific field returned by the API.
 struct FieldError: Decodable {
     let field: String
     let message: String
 }
 
-// Define internal errors for the networking layer
+/// NetworkError enumerates common errors produced by the networking layer.
+///
+/// This includes invalid URL construction, unexpected responses, HTTP status errors with
+/// optional `APIError` payloads, and decoding failures.
 enum NetworkError: Error, LocalizedError {
     case invalidURL
     case invalidResponse

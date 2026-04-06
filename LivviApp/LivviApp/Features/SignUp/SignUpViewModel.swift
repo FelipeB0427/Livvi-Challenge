@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 @MainActor
+/// SignUpViewModel handles user registration flow: validation, network request and state updates.
 class SignUpViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
@@ -21,10 +22,12 @@ class SignUpViewModel: ObservableObject {
     
     private let networkService: NetworkServiceProtocol
     
-    init(networkService: NetworkServiceProtocol = NetworkService(authStore: KeychainAuthStore())) {
-        self.networkService = networkService
+    /// Initialize with an optional network service (injectable for tests).
+    init(networkService: NetworkServiceProtocol? = nil) {
+        self.networkService = networkService ?? NetworkService(authStore: KeychainAuthStore())
     }
     
+    /// Perform sign up; returns true on success.
     func signUp() async -> Bool {
         guard !email.isEmpty, !password.isEmpty, !firstName.isEmpty, !lastName.isEmpty else {
             errorMessage = "All fields are required."

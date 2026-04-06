@@ -14,6 +14,11 @@ enum HTTPMethod: String {
     case delete = "DELETE"
 }
 
+/// Endpoint describes a typed API endpoint used by `NetworkService`.
+///
+/// Implement this protocol to provide path, HTTP method, headers, body, and query items
+/// for a request. The default implementation provides a `baseURL` and a `urlRequest` helper
+/// to build a `URLRequest` from the endpoint properties.
 protocol Endpoint {
     var path: String { get }
     var method: HTTPMethod { get }
@@ -32,8 +37,9 @@ extension Endpoint {
         return true
     }
     
+    /// Construct a `URLRequest` for this endpoint or return `nil` if the URL is invalid.
     var urlRequest: URLRequest? {
-        guard let url = URL(string: baseURL)?.appendingPathComponent(path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))) else {
+        guard (URL(string: baseURL)?.appendingPathComponent(path.trimmingCharacters(in: CharacterSet(charactersIn: "/")))) != nil else {
             return nil
         }
         

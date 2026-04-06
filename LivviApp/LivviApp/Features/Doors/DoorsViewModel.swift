@@ -9,6 +9,9 @@ import Foundation
 import Combine
 
 @MainActor
+/// DoorsViewModel loads and paginates `Door` items from the backend and exposes them to the UI.
+///
+/// Supports searching by name with debounce, pagination and error handling.
 class DoorsViewModel: ObservableObject {
     @Published var doors: [Door] = []
     @Published var isLoading: Bool = false
@@ -29,14 +32,17 @@ class DoorsViewModel: ObservableObject {
     private var searchTask: Task<Void, Never>?
     private let networkService: NetworkServiceProtocol
     
-    init(networkService: NetworkServiceProtocol = NetworkService(authStore: KeychainAuthStore())) {
-        self.networkService = networkService
+    /// Initialize the view model with an optional `NetworkServiceProtocol` for testing.
+    init(networkService: NetworkServiceProtocol? = nil) {
+        self.networkService = networkService ?? NetworkService(authStore: KeychainAuthStore())
     }
     
+    /// Load the first page of doors.
     func loadInitialDoors() async {
         await fetchDoors(reset: true)
     }
     
+    /// Request to load more doors when the given `currentDoor` is visible.
     func loadMoreDoorsIfNeeded(currentDoor: Door) async {
         guard let lastDoor = doors.last, lastDoor.id == currentDoor.id else { return }
         guard hasMorePages, !isFetching else { return }
@@ -45,6 +51,7 @@ class DoorsViewModel: ObservableObject {
         await fetchDoors()
     }
     
+    /// Refresh the doors list resetting pagination.
     func refreshDoors() async {
         await fetchDoors(reset: true)
     }
@@ -97,6 +104,3 @@ class DoorsViewModel: ObservableObject {
         isLoading = false
     }
 }
-            
-
-            

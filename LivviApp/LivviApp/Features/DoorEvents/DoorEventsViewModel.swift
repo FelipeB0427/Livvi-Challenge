@@ -9,13 +9,15 @@ import Foundation
 import Combine
 
 @MainActor
+/// DoorEventsViewModel fetches raw events from the backend and maps them into `ParsedBLEEvent` objects
+/// for display. It handles pagination and error mapping.
 class DoorEventsViewModel: ObservableObject {
     @Published var events: [ParsedBLEEvent] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     
     // MARK: - Dependencies
-    private let doorId: Int
+    let doorId: Int
     private let networkService: NetworkServiceProtocol
     private let parser: BLEEventParser
     
@@ -25,20 +27,23 @@ class DoorEventsViewModel: ObservableObject {
     private var hasMorePages = true
     private var isFetching = false
     
+    /// Initialize with a door id; optional dependencies can be injected for testing.
     init(
         doorId: Int,
-        networkService: NetworkServiceProtocol = NetworkService(authStore: KeychainAuthStore()),
-        parser: BLEEventParser = BLEEventParser()
+        networkService: NetworkServiceProtocol? = nil,
+        parser: BLEEventParser? = nil
     ) {
         self.doorId = doorId
-        self.networkService = networkService
-        self.parser = parser
+        self.networkService = networkService ?? NetworkService(authStore: KeychainAuthStore())
+        self.parser = parser ?? BLEEventParser()
     }
     
+    /// Load events starting from page 0.
     func loadInitialEvents() async {
         await fetchEvents(reset: true)
     }
     
+    /// Load more events when the given `currentEvent` is visible.
     func loadMoreIfNeeded(currentEvent: ParsedBLEEvent) async {
         guard let lastEvent = events.last, lastEvent.id == currentEvent.id else { return }
         guard hasMorePages, !isFetching else { return }
@@ -47,6 +52,7 @@ class DoorEventsViewModel: ObservableObject {
         await fetchEvents()
     }
     
+    /// Refresh events resetting pagination.
     func refresh() async {
         await fetchEvents(reset: true)
     }

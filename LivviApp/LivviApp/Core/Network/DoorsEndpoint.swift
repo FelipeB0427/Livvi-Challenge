@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Endpoints for door-related operations (list, find).
 enum DoorsEndpoint: Endpoint {
     case list(page: Int, pageSize: Int)
     case find(name: String, page: Int, pageSize: Int)

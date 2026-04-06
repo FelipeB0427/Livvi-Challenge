@@ -12,6 +12,15 @@ enum BLEParseError: Error {
     case insufficientData
 }
 
+/// BLEEventParser parses base64-encoded BLE event payloads produced by the door devices.
+///
+/// The parser expects a compact binary format where the first 4 bytes represent a
+/// little-endian Unix timestamp offset from `deviceEpoch`, followed by a single `logCode` byte
+/// describing the event and an optional payload whose length is encoded in the high nibble
+/// of the `logCode`.
+///
+/// - Note: The parser assumes the device epoch defined by `deviceEpoch`.
+/// - SeeAlso: `ParsedBLEEvent`, `BLEEventType`
 class BLEEventParser {
     public static let deviceEpoch: Date = {
         var components = DateComponents()
@@ -24,6 +33,12 @@ class BLEEventParser {
         return Calendar.current.date(from: components)!
     }()
     
+    /// Parse a base64 encoded event string into a `ParsedBLEEvent`.
+    ///
+    /// - Parameter base64String: The base64-encoded bytes returned by the API for a single event.
+    /// - Throws: `BLEParseError.invalidBase64` when the input is not valid base64; `BLEParseError.insufficientData`
+    ///           when the decoded buffer does not contain the minimum required fields.
+    /// - Returns: A `ParsedBLEEvent` containing a decoded timestamp, human-friendly event type and payload details.
     func parse(base64String: String) throws -> ParsedBLEEvent {
         guard let data = Data(base64Encoded: base64String) else {
             throw BLEParseError.invalidBase64

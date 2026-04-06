@@ -7,6 +7,9 @@
 
 import Foundation
 
+/// Endpoints related to authentication (sign up / sign in).
+///
+/// These endpoints do not require an auth token.
 enum AuthEndpoint: Endpoint {
     case signUp(SignUpRequest)
     case signIn(SignInRequest)

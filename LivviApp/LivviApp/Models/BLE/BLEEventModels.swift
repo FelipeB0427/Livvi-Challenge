@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// ParsedBLEEvent represents a human-friendly BLE event produced by `BLEEventParser`.
 struct ParsedBLEEvent: Identifiable, Equatable {
     let id = UUID()
     let timestamp: Date
@@ -14,6 +15,7 @@ struct ParsedBLEEvent: Identifiable, Equatable {
     let payloadDetails: String
 }
 
+/// BLEEventType maps known log codes to a typed enum with a friendly description.
 enum BLEEventType: UInt8 {
     case setup = 0x00
     case doorOpen = 0x01
@@ -33,6 +35,7 @@ enum BLEEventType: UInt8 {
     case unlock = 0x50
     case unlockDenied = 0x51
     
+    /// Human readable description for the event type.
     var description: String {
         switch self {
         case .setup: return "Setup"
@@ -48,6 +51,8 @@ enum BLEEventType: UInt8 {
 }
 
 // MARK: - API Response Models
+
+/// Event object returned by the API describing a raw logged event for a door.
 struct APIEvent: Decodable {
     let id: Int
     let logType: String
@@ -56,6 +61,7 @@ struct APIEvent: Decodable {
     let additionalData: [APIEventAdditionalData]
 }
 
+/// AdditionalData items included in `APIEvent` with parsed hex values.
 struct APIEventAdditionalData: Decodable {
     let parameterName: String
     let hexValue: String

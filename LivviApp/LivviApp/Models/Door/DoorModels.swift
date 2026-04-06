@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Generic paginated response returned by the API.
 struct PaginatedResponse<T: Decodable>: Decodable {
     let content: [T]
     let page: Int
@@ -15,6 +16,7 @@ struct PaginatedResponse<T: Decodable>: Decodable {
     let totalPages: Int
 }
 
+/// Represents a door managed by the Livvi backend.
 struct Door: Decodable, Identifiable {
     let id: Int
     let serial: String

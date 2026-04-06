@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Endpoints for fetching events related to a door.
 enum EventsEndpoint: Endpoint {
     case rawEvents(doorId: Int, page: Int, size: Int)
     

@@ -8,12 +8,16 @@
 import Foundation
 import Security
 
+/// AuthStore defines an interface for persisting an authentication token.
 protocol AuthStore {
     func saveToken(_ token: String)
     func getToken() -> String?
     func deleteToken()
 }
 
+/// Keychain-backed implementation of `AuthStore`.
+///
+/// Stores the token as a generic password item under a fixed account identifier.
 class KeychainAuthStore: AuthStore {
     private let service = "com.livvi.bearerToken"
     

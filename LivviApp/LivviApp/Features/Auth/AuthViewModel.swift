@@ -9,6 +9,13 @@ import Foundation
 import Combine
 
 @MainActor
+/// AuthViewModel manages the sign-in state and authentication actions used by the Auth screen.
+///
+/// This view model exposes published properties for the view to bind to and uses a
+/// `NetworkServiceProtocol` to perform authentication requests. It persists tokens using
+/// an `AuthStore` implementation (defaulting to `KeychainAuthStore`).
+///
+/// - SeeAlso: `SignInRequest`, `TokenResponse`, `AuthStore`
 class AuthViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
@@ -19,14 +26,26 @@ class AuthViewModel: ObservableObject {
     private let networkService: NetworkServiceProtocol
     private let authStore: AuthStore
     
-    init(networkService: NetworkServiceProtocol = NetworkService(authStore: KeychainAuthStore()),
-        authStore: AuthStore = KeychainAuthStore()) {
-        self.networkService = networkService
-        self.authStore = authStore
-        
-        self.isAuthenticated = authStore.getToken() != nil
+    /// Create a new AuthViewModel.
+    ///
+    /// - Parameters:
+    ///   - networkService: A `NetworkServiceProtocol` used to perform auth requests. A concrete
+    ///                     `NetworkService` with a `KeychainAuthStore` is used by default.
+    ///   - authStore: An `AuthStore` implementation responsible for persisting tokens.
+    init(networkService: NetworkServiceProtocol? = nil,
+        authStore: AuthStore? = nil) {
+        // Defer default instance creation to the initializer body to avoid calling potentially
+        // main-actor-isolated initializers in a non-isolated default argument context.
+        self.networkService = networkService ?? NetworkService(authStore: KeychainAuthStore())
+        self.authStore = authStore ?? KeychainAuthStore()
+
+        self.isAuthenticated = self.authStore.getToken() != nil
     }
     
+    /// Attempt to sign in using the currently-provided `email` and `password`.
+    ///
+    /// On success the returned token is saved in the `authStore` and `isAuthenticated` becomes `true`.
+    /// On failure `errorMessage` is set with a user-friendly description.
     func signIn() async {
         guard !email.isEmpty, !password.isEmpty else {
             errorMessage = "Email and password cannot be empty."
@@ -53,6 +72,7 @@ class AuthViewModel: ObservableObject {
         isloading = false
     }
     
+    /// Log out the current user by removing the saved token and clearing authentication state.
     func logout() {
         authStore.deleteToken()
         self.isAuthenticated = false
